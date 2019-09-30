@@ -1,0 +1,14 @@
+class Solution {
+public:
+    bool isPalindrome(int x) {
+        if(x<0||x%10==0&&x!=0)
+            return false;
+            int revernum=0;
+            while(x>revernum)//当翻转数翻转一半位数
+            {
+                revernum=x%10+revernum*10;//翻转数
+                x/=10;
+            }
+        return x==revernum || x==revernum/10;//翻转数为奇数个，中间的数不影响判断
+    }
+};
