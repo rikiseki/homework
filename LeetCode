@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int threeSumClosest(vector<int>& nums, int target) {
+        int len=nums.size();
+        int ans=nums[0]+nums[1]+nums[2];
+        sort(nums.begin(),nums.end());
+        for(int i=0;i<len;i++)
+        {
+            int start=i+1;
+            int end=len-1;
+            int sum;
+            while(start<end)
+            {
+                sum=nums[i]+nums[start]+nums[end];
+                if(abs(sum-target)<abs(ans-target))
+                    ans=sum;
+                if(sum>target)
+                    end--;
+                else if(sum<target)
+                    start++;
+                else
+                    return sum;
+            }
+        }
+        return ans;
+    }
+};
+//学到了双指针的写法，数组排序；
+在对数组元素i遍历，同时设置两个指针start,end,如果相加和大于目标值，end--，否则，start++来接近目标值（start的设置在i+1的位置，避免重复）
