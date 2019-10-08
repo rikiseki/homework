@@ -15,7 +15,7 @@ public:
         for(int i=0;i<n;i++)
         {
             fast=fast->next;
-        }
+        }//双指针，fast前进n个
         if(fast==NULL)//删掉的是第一个结点
             return head->next;
         while(fast->next!=NULL)
