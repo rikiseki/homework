@@ -1,0 +1,40 @@
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {//双指针，i用来遍历，s在i后面的元素的靠前指针，e是靠后的
+        vector<vector<int>> ans;
+        sort(nums.begin(),nums.end());//对数组排序
+        int len=nums.size();
+        if(len<3||nums.front()>0||nums.back()<0)//显然不满足条件（个数不足3，最小数大于0，最大数小于0）
+        return ans;
+        int s,e;
+        for(int i=0;i<=len-3;i++)
+        {
+            if(nums[i]>0)
+                break;
+            if(i>0 && nums[i]==nums[i-1])//当这个i的值和之前的重复了，continue
+                continue;
+            s=i+1;
+            e=len-1;
+            while(s<e)
+            {
+                int sum=nums[i]+nums[s]+nums[e];
+                if(sum>0)
+                    e--;
+                else if(sum<0)
+                    s++;
+                else
+                {                                                                     
+                    ans.push_back({nums[i],nums[s],nums[e]});
+        			      while(s<e&&nums[s]==nums[s+1])//去除重复的情况
+        			          s++;
+        			      while(s<e&&nums[e]==nums[e-1])
+        			          e--;
+        			      s++;//双指针继续前进
+        			      e--;
+				        }
+            
+            }
+        }
+        return ans;
+    }
+};
