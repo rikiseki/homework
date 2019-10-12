@@ -1,0 +1,21 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        if(head==NULL||head->next==NULL)//终止条件，只剩一个或者没结点了，返回的是处理好的链表
+        {
+            return head;
+        }
+        ListNode *p=head->next;一共三个结点，head,head->next,swapPairs(p->next)来交换前两个结点
+        head->next=swapPairs(p->next);
+        p->next=head;
+        return p;
+    }
+};
