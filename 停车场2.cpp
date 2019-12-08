@@ -1,13 +1,13 @@
 ﻿#include <iostream>
 using namespace std;
-#define max 10
+#define max 5
 #define fee 2
-typedef struct Car
+typedef struct Car//车的信息结构体
 {
 	int num;
 	int time;
 }car;
-typedef struct Node
+typedef struct Node//结点
 {
 	car* data;
 	struct Node* next;
@@ -42,6 +42,7 @@ int main()
 {
 	cout << "停车场管理系统" << endl;
 	cout << "****************************************************************" << endl;
+	cout << "A 停入，D 驶出，P 输出停车场数量，W 输出候车厂数量，E 退出" << endl;
 	char state;
 	int num, time;
 	stack park = stack();
@@ -68,31 +69,52 @@ int main()
 		}
 		else if (state == 'D')
 		{
-			car *d = park.pop();
-			while (d->num != num)
+			if (!park.isEmpty())
 			{
-				temp.push(d);
-				d = park.pop();
-			}
-			cout << "停留时间:" << time - d->time << endl;
-			cout << "费用:" << (time - d->time) * fee << "元" << endl;
-			delete d;
-			if (!temp.isEmpty())//当临时便道不是空的
-			{
-				d = temp.pop();//把第一个弹出
-				while (d != NULL)
+				car* d = park.pop();
+				while (d->num != num && !park.isEmpty())
 				{
-					park.push(d);//把d放入停车场
-					d = temp.pop();
+					temp.push(d);
+					//cout << d->num << "进队！！";
+					while (!park.isEmpty()&&d->num != num )
+					{
+						d = park.pop();
+						temp.push(d);
+					}
 				}
-				delete d;
+				if (d->num == num)
+				{
+					temp.pop();
+					cout << "停留时间:" << time - d->time << endl;
+					cout << "费用:" << (time - d->time) * fee << "元" << endl;
+					delete d;
+				}
+				else
+				{
+					cout << "未找到该车" << endl;
+					temp.push(d);//把车送到便道因为74设置
+				}
+				if (!temp.isEmpty())//当临时便道不是空的
+				{
+					d = temp.pop();//把第一个弹出
+					while (d != NULL)
+					{
+						park.push(d);//把d放入停车场
+						d = temp.pop();
+					}
+					delete d;
+				}
+				if ((!road.isEmpty())&&(park.gett()!=max))//停车场没满，便道有车
+				{
+					d = road.DeQueue();
+					d->time = time;
+					park.push(d);
+					cout << d->num << "号车进入停车场" << endl;
+				}
 			}
-			if (!road.isEmpty())
+			else
 			{
-				d = road.DeQueue();
-				d->time = time;
-				park.push(d);
-				cout << d->num << "号车进入停车场" << endl;
+				cout << "停车场已空" << endl;
 			}
 		}
 		else if (state == 'P')
@@ -108,12 +130,13 @@ int main()
 			cout << "请输入正确指令" << endl;
 		}
 	}
+	cout << "感谢使用！" << endl;
 }
 
 stack::stack()
 {
 	top = -1;
-	stacksize = max;
+	stacksize = max-1;
 }
 bool stack::push(car* x)
 {
@@ -181,7 +204,7 @@ bool queue::isEmpty()
 
 car* queue::DeQueue()
 {
-	if (rear = front)
+	if (rear ==front)
 		return NULL;
 	Node* n = new Node;
 	Car* x;
